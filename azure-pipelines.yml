@@ -10,7 +10,10 @@ trigger:
 variables:
 
   # Environment name
-  environmentName: 'java-17-linapp'
+  environmentName: 'pet-clinic'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
 
 pool:
   vmImage: ubuntu-latest
