@@ -5,22 +5,55 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
-- main
+- none
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    jdkVersionOption: '1.17'
-    jdkArchitectureOption: 'x64'
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: MavenPackageAndPublishArtifacts
+    displayName: Maven Package and Publish Artifacts
+    pool:
+      vmImage: $(vmImageName)
 
-- task: AzureSpringCloud@0
-  inputs:
-    azureSubscription: 'azure-service-con'
-    Action: 'Deploy'
-    AzureSpringCloud: '/subscriptions/275fde5b-989e-4985-aad3-51f9e39899f5/resourceGroups/pet-clinic-grp/providers/Microsoft.AppPlatform/Spring/spring-pet-app'
-    AppName: 'pet-clinic'
-    UseStagingDeployment: true
+    steps:
+    - task: Maven@3
+      displayName: 'Maven Package'
+      inputs:
+        mavenPomFile: 'pom.xml'
+        jdkVersionOption: '1.17'
+        jdkArchitectureOption: 'x64'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to artifact staging directory'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: '**/target/*.?(war|jar)'
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+
+    - upload: $(Build.ArtifactStagingDirectory)
+      artifact: drop
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployLinuxWebApp
+    displayName: Deploy Linux Web App
+    pool:
+      vmImage: $(vmImageName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureSpringCloud@0
+            inputs:
+              azureSubscription: 'azure-service-con'
+              Action: 'Deploy'
+              AzureSpringCloud: '/subscriptions/275fde5b-989e-4985-aad3-51f9e39899f5/resourceGroups/pet-clinic-grp/providers/Microsoft.AppPlatform/Spring/spring-pet-app'
+              AppName: 'pet-clinic'
+              UseStagingDeployment: true
