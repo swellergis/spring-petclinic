@@ -30,3 +30,13 @@ steps:
 
 - upload: $(Build.ArtifactStagingDirectory)
   artifact: drop
+
+- task: AzureSpringCloud@0
+  inputs:
+    azureSubscription: 'azure-service-con'
+    Action: 'Deploy'
+    AzureSpringCloud: '/subscriptions/275fde5b-989e-4985-aad3-51f9e39899f5/resourceGroups/pet-clinic-grp/providers/Microsoft.AppPlatform/Spring/spring-pet-app'
+    AppName: 'pet-clinic'
+    DeploymentType: 'Artifacts'
+    UseStagingDeployment: true
+    Package: ./target/*.jar
