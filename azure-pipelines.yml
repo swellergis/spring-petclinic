@@ -14,6 +14,9 @@ steps:
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
+    jdkVersionOption: '1.17'
+    jdkArchitectureOption: 'x64'
+
 - task: AzureSpringCloud@0
   inputs:
     azureSubscription: 'azure-service-con'
