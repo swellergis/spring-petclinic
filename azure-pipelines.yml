@@ -12,10 +12,10 @@ variables:
   azureSubscription: 'a39a0d46-c97f-4b97-b1c1-44f983ce371f'
 
   # Web app name
-  webAppName: 'java-17-linapp'
+  webAppName: 'spring-pet-app'
 
   # Environment name
-  environmentName: 'java-17-linapp'
+  environmentName: 'spring-pet-app'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -61,7 +61,7 @@ stages:
         deploy:
           steps:
           - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: java-17-linapp'
+            displayName: 'Azure Web App Deploy: spring-pet-app'
             inputs:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
