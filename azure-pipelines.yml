@@ -17,14 +17,15 @@ pool:
 steps:
 - task: Maven@3
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: './pom.xml'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.17'
     jdkArchitectureOption: 'x64'
-#    publishJUnitResults: true
-#    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    publishJUnitResults: false
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+    options: '-DskipTests=true'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to artifact staging directory'
@@ -44,4 +45,4 @@ steps:
     AppName: 'pet-clinic'
     DeploymentType: 'Artifacts'
     UseStagingDeployment: true
-    Package: ./target/*.jar
+    Package: '$(System.DefaultWorkingDirectory)/**/spring-petclinic-3.1.0-SNAPSHOT.jar'
