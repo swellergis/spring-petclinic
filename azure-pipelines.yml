@@ -45,4 +45,4 @@ steps:
     AppName: 'pet-clinic'
     DeploymentType: 'Artifacts'
     UseStagingDeployment: true
-    Package: '$(System.DefaultWorkingDirectory)/**/spring-petclinic-3.1.0-SNAPSHOT.jar'
+    Package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
