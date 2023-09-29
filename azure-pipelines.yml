@@ -45,4 +45,4 @@ steps:
     AppName: 'pet-clinic'
     DeploymentType: 'Artifacts'
     UseStagingDeployment: true
-    Package: '$(Build.ArtifactStagingDirectory)/drop/**/target/*.?(war|jar)'
+    Package: ./target/spring-petclinic-3.1.0-SNAPSHOT.jar
