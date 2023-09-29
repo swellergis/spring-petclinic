@@ -4,7 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
-- main
+- none
+
+variables:
+
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: '08357c61-f7a3-473c-aaa6-fda0da3452bb'
 
 pool:
   vmImage: ubuntu-latest
@@ -17,8 +22,8 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.17'
     jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#    publishJUnitResults: true
+#    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
 - task: CopyFiles@2
@@ -33,7 +38,7 @@ steps:
 
 - task: AzureSpringCloud@0
   inputs:
-    azureSubscription: 'azure-service-con'
+    azureSubscription: $(azureSubscription)
     Action: 'Deploy'
     AzureSpringCloud: '/subscriptions/275fde5b-989e-4985-aad3-51f9e39899f5/resourceGroups/pet-clinic-grp/providers/Microsoft.AppPlatform/Spring/spring-pet-app'
     AppName: 'pet-clinic'
