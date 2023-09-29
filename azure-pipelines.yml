@@ -50,8 +50,9 @@ stages:
         Contents: '**/target/*.?(war|jar)'
         TargetFolder: $(Build.ArtifactStagingDirectory)
 
-    - upload: $(Build.ArtifactStagingDirectory)
+    - publish: $(Build.ArtifactStagingDirectory)
       artifact: drop
+      name: 'app'
 
 - stage: Deploy
   displayName: Deploy stage
