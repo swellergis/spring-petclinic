@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
-- main
+- none
 
 variables:
 
@@ -52,7 +52,7 @@ stages:
 
     - publish: $(Build.ArtifactStagingDirectory)
       artifact: drop
-      name: 'app'
+      name: app
 
 - stage: Deploy
   displayName: Deploy stage
